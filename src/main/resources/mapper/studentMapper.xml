@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.dao.StudentDao">
+    <select id="selectAll" resultType="Student">
+        select * from student
+    </select>
+    <insert id="add" parameterType="Student">
+        insert into student(name,age) values (#{name},#{age})
+    </insert>
+
+    <select id="select" parameterType="Student" resultType="Student">
+        select * from student
+        <where>
+            <if test="id!=null">AND id=#{id}</if>
+            <if test="name!=null">AND name like #{queryName}</if>
+            <if test="age!=null">AND age>#{age}</if>
+        </where>
+
+    </select>
+
+    <!--<select id="selectName" parameterType="String" resultType="Student">-->
+        <!--select * FROM student WHERE school like #{queryname}-->
+    <!--</select>-->
+
+    <update id="update" parameterType="Student">
+            update student set name=#{name},age=#{age} where id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Student">
+        delete from student where id=#{id}
+    </delete>
+
+    <delete id="delete" parameterType="java.util.ArrayList">
+        delete from student where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
